@@ -11,6 +11,9 @@ class LogIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController email = TextEditingController();
+    TextEditingController password = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -23,10 +26,27 @@ class LogIn extends StatelessWidget {
         listener: (context, state) {
           if (state is NavigateToSignUpState) {
             Navigator.of(context).pushNamed("/signUp");
+          } else if (state is LoginSuccess) {
+            // Navigate to home page or show success message
+            Navigator.of(context).pushNamed("/");
+            context.read<LoginBloc>().add(NavigateToStart());
+          } else if (state is LoginFailure) {
+            // Show error message
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: MyColor.backgroundBlackColor,
+                content: Utils.textHeader(state.error, 13, FontWeight.bold,
+                    MyColor.primaryWhiteTextColor),
+              ),
+            );
           }
         },
-        child: Container(
-          child: Center(
+        child: BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+          if (state is LoginLoading) {
+            return Center(child: Utils.loadingIcon());
+          }
+          return Center(
             child: Container(
               color: MyColor.backgroundColor,
               padding: const EdgeInsets.only(
@@ -43,6 +63,7 @@ class LogIn extends StatelessWidget {
                       child: Column(
                         children: [
                           TextField(
+                            controller: email,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: MyColor.backgroundColor,
@@ -60,6 +81,7 @@ class LogIn extends StatelessWidget {
                           ),
                           Utils.getSizedBoxHeight(),
                           TextField(
+                            controller: password,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: MyColor.backgroundColor,
@@ -80,7 +102,12 @@ class LogIn extends StatelessWidget {
                     ),
                   ),
                   Utils.buttonRed("Log In", 13, FontWeight.w400,
-                      MyColor.primaryWhiteTextColor, () => null),
+                      MyColor.primaryWhiteTextColor, () {
+                    // send the login credentials to sign in
+                    context
+                        .read<LoginBloc>()
+                        .add(LogInUser(email.text, password.text));
+                  }),
                   Utils.getSizedBoxHeight(),
                   Text.rich(
                     TextSpan(
@@ -89,7 +116,7 @@ class LogIn extends StatelessWidget {
                         TextSpan(
                           text: 'Sign up here',
                           style: TextStyle(
-                            color: Theme.of(context).primaryColor,
+                            color: MyColor.primaryTextColor,
                             decoration: TextDecoration.underline,
                           ),
                           // Add your navigation logic here
@@ -106,8 +133,8 @@ class LogIn extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-        ),
+          );
+        }),
       ),
     );
   }

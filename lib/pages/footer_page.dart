@@ -33,16 +33,10 @@ class Footer extends StatelessWidget {
               ),
             ),
             // Footer links
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 Utils.footerLinks("Company", MyColor.primaryTextColor,
-                    FontWeight.w400, () => null),
-                Utils.getSizedBoxWidth(),
-                Utils.footerLinks("Products", MyColor.primaryTextColor,
-                    FontWeight.w400, () => null),
-                Utils.getSizedBoxWidth(),
-                Utils.footerLinks("Offers", MyColor.primaryTextColor,
                     FontWeight.w400, () => null),
                 Utils.getSizedBoxWidth(),
                 Utils.footerLinks("About", MyColor.primaryTextColor,

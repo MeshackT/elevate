@@ -4,18 +4,30 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../models/user_model.dart';
 import '../../../utils/utils.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
   const SignUp({super.key});
 
   @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  @override
   Widget build(BuildContext context) {
+    TextEditingController userName = TextEditingController();
+    TextEditingController email = TextEditingController();
+    TextEditingController password = TextEditingController();
+    TextEditingController confirmPassword = TextEditingController();
+    bool load = false;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: MyColor.backgroundColor,
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: MyColor.primaryIconColor,
         ),
       ),
@@ -24,131 +36,199 @@ class SignUp extends StatelessWidget {
           if (state is NavigateToLogInState) {
             // go to login
             Navigator.of(context).pushNamed("/login");
-          }
-        },
-        child: Center(
-          child: Container(
-            color: MyColor.backgroundColor,
-            padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Utils.textHeader(
-                    "Sign Up", 46, FontWeight.bold, MyColor.primaryTextColor),
-                Utils.getSizedBoxHeight(),
-                Expanded(
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width / 2.3,
-                    child: Column(
-                      children: [
-                        TextField(
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: MyColor.backgroundColor,
-                            hintText: 'Enter your name',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(50),
-                              borderSide: const BorderSide(
-                                color: MyColor.primaryTextColor,
-                                width: 0.8,
-                              ),
-                            ),
-                          ),
-                          autocorrect: true,
-                          keyboardType: TextInputType.emailAddress,
-                        ),
-                        Utils.getSizedBoxHeight(),
-                        TextField(
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: MyColor.backgroundColor,
-                            hintText: 'Enter your password',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(50),
-                              borderSide: const BorderSide(
-                                color: MyColor.primaryTextColor,
-                                width: 0.8,
-                              ),
-                            ),
-                          ),
-                          obscureText: true,
-                          keyboardType: TextInputType.text,
-                        ),
-                        Utils.getSizedBoxHeight(),
-                        TextField(
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: MyColor.backgroundColor,
-                            hintText: 'Confirm your password',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(50),
-                              borderSide: const BorderSide(
-                                color: MyColor.primaryTextColor,
-                                width: 0.8,
-                              ),
-                            ),
-                          ),
-                          obscureText: true,
-                          keyboardType: TextInputType.text,
-                        ),
-                        Utils.getSizedBoxHeight(),
-                      ],
+          } else if (state is SignupLoading) {
+            setState(() {
+              load = true;
+            });
+          } else if (state is SignupSuccess) {
+            setState(() {
+              load = false;
+            });
+            // Navigate to some success page or show a success message
+          } else if (state is SignupFailure) {
+            // Show error message
+            setState(() {
+              load = false;
+            });
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                content: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    color: MyColor.backgroundBlackColor,
+                    padding: const EdgeInsets.all(10),
+                    child: Utils.textHeader(
+                      "Passwords do not match",
+                      13,
+                      FontWeight.bold,
+                      MyColor.primaryWhiteTextColor,
                     ),
                   ),
                 ),
-                Utils.buttonRed(
-                    "Continue",
-                    13,
-                    FontWeight.w400,
-                    MyColor.primaryWhiteTextColor,
-                    () =>
-                        // TODO Sign up
-                        null),
-                Utils.getSizedBoxHeight(),
-                Text.rich(
-                  TextSpan(
-                    text: 'Already have an account? ',
-                    children: [
-                      TextSpan(
-                        text: 'Login here',
-                        style: const TextStyle(
-                          color: MyColor.primaryTextColor,
-                          decoration: TextDecoration.underline,
-                        ),
-                        // Add your navigation logic here
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            //   log In
-                            // event method
-                            context.read()<SignupBloc>().add(NavigateToLogIn());
-                          },
+                behavior: SnackBarBehavior.floating,
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              ),
+            );
+          }
+        },
+        child: BlocBuilder<SignupBloc, SignupState>(builder: (context, state) {
+          if (state is SignupLoading) {
+            return Center(child: Utils.loadingIcon());
+          }
+          return Center(
+            child: Container(
+              color: MyColor.backgroundColor,
+              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Utils.textHeader(
+                      "Sign Up", 46, FontWeight.bold, MyColor.primaryTextColor),
+                  Utils.getSizedBoxHeight(),
+                  Expanded(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width / 2.3,
+                      child: Column(
+                        children: [
+                          TextField(
+                            controller: userName,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: MyColor.backgroundColor,
+                              hintText: 'Enter your name',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(50),
+                                borderSide: const BorderSide(
+                                  color: MyColor.primaryTextColor,
+                                  width: 0.8,
+                                ),
+                              ),
+                            ),
+                            autocorrect: true,
+                            keyboardType: TextInputType.text,
+                          ),
+                          Utils.getSizedBoxHeight(),
+                          TextField(
+                            controller: email,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: MyColor.backgroundColor,
+                              hintText: 'Enter your email',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(50),
+                                borderSide: const BorderSide(
+                                  color: MyColor.primaryTextColor,
+                                  width: 0.8,
+                                ),
+                              ),
+                            ),
+                            autocorrect: true,
+                            keyboardType: TextInputType.emailAddress,
+                          ),
+                          Utils.getSizedBoxHeight(),
+                          TextField(
+                            controller: password,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: MyColor.backgroundColor,
+                              hintText: 'Enter your password',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(50),
+                                borderSide: const BorderSide(
+                                  color: MyColor.primaryTextColor,
+                                  width: 0.8,
+                                ),
+                              ),
+                            ),
+                            obscureText: true,
+                            keyboardType: TextInputType.text,
+                          ),
+                          Utils.getSizedBoxHeight(),
+                          TextField(
+                            controller: confirmPassword,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: MyColor.backgroundColor,
+                              hintText: 'Confirm your password',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(50),
+                                borderSide: const BorderSide(
+                                  color: MyColor.primaryTextColor,
+                                  width: 0.8,
+                                ),
+                              ),
+                            ),
+                            obscureText: true,
+                            keyboardType: TextInputType.text,
+                          ),
+                          Utils.getSizedBoxHeight(),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-                Utils.getSizedBoxHeight(),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     Checkbox(
-                //       value: false,
-                //       onChanged: (bool? value) {
-                //         // Todo Check box
-                //       },
-                //     ),
-                //     const Expanded(
-                //       child: Text(
-                //         'By continuing, I agree to the terms of use and privacy policy',
-                //         style: TextStyle(
-                //             fontSize: 12.0, color: MyColor.primaryTextColor),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-              ],
+                  load == true
+                      ? Utils.loadingIcon()
+                      : Utils.buttonRed("Continue", 13, FontWeight.w400,
+                          MyColor.primaryWhiteTextColor, () {
+                          // TODO Sign up
+                          if (password.text == confirmPassword.text &&
+                              email.text.isNotEmpty) {
+                            // pass the data on the constructor
+                            UserModel user = UserModel(
+                              userName: userName.text.trim(),
+                              email: email.text.trim(),
+                              password: password.text.trim(),
+                            );
+                            setState(() {
+                              load = true;
+                            });
+
+                            // register the user and store the data
+                            context.read<SignupBloc>().add(SignUpUser(user));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: MyColor.backgroundBlackColor,
+                                content: Utils.textHeader(
+                                    "Passwords do not match",
+                                    13,
+                                    FontWeight.bold,
+                                    MyColor.primaryTextColor),
+                              ),
+                            );
+                          }
+                        }),
+                  Utils.getSizedBoxHeight(),
+                  Text.rich(
+                    TextSpan(
+                      text: 'Already have an account? ',
+                      children: [
+                        TextSpan(
+                          text: 'Login here',
+                          style: const TextStyle(
+                            color: MyColor.primaryTextColor,
+                            decoration: TextDecoration.underline,
+                          ),
+                          // Add your navigation logic here
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              //   log In
+                              // event method
+                              context.read<SignupBloc>().add(NavigateToLogIn());
+                            },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Utils.getSizedBoxHeight(),
+                ],
+              ),
             ),
-          ),
-        ),
+          );
+        }),
       ),
     );
   }

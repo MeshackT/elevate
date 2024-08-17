@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class MyColor {
   // background color
   static const backgroundColor = Color(0xffffffff);
+  static const backgroundBlackColor = Color(0xff000000);
   // Text Color
   static const primaryTextColor = Color(0xff000000);
   static const secondaryTextColor = Color(0xff2f2f2f);

@@ -4,7 +4,7 @@ abstract class MenEvent {
   const MenEvent();
 
   @override
-  List<Object> get prop => [];
+  List<Object> get props => [];
 }
 
-class MenNavigateToCart extends MenEvent {}
+class LoadProductMen extends MenEvent {}

@@ -7,18 +7,18 @@ abstract class NavbarEvent extends Equatable {
   List<Object> get props => [];
 }
 
-// navigate to these screens on event click
-// Men
+class CheckUserStatusUser extends NavbarEvent {}
+
 class NavigateToMen extends NavbarEvent {}
 
-// Women
 class NavigateToWomen extends NavbarEvent {}
 
-// kids
 class NavigateToKids extends NavbarEvent {}
 
-// LoginSign up
 class NavigateToLogin extends NavbarEvent {}
 
-// Cart
+class NavigateToTest extends NavbarEvent {}
+
+class NavigateToMyProfile extends NavbarEvent {}
+
 class NavigateToCart extends NavbarEvent {}

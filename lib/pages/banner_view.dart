@@ -15,7 +15,7 @@ class BannerView extends StatelessWidget {
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(100)),
       child: Image.asset(
         'images/banner_women.jpg',
-        fit: BoxFit.cover,
+        fit: BoxFit.contain,
       ),
     );
   }
