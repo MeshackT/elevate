@@ -1,20 +1,20 @@
-import 'package:elevate/pages/men_page/men_bloc.dart';
+import 'package:elevate/pages/kids_page/kids_bloc.dart';
+import 'package:elevate/theme_utils/theme_utils.dart';
+import 'package:elevate/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../theme_utils/theme_utils.dart';
-import '../../utils/utils.dart';
 import '../banner_view/banner_view.dart';
 
-class MenPage extends StatefulWidget {
-  const MenPage({super.key});
+class KidsPage extends StatefulWidget {
+  const KidsPage({super.key});
 
   @override
-  State<MenPage> createState() => _MenPageState();
+  State<KidsPage> createState() => _KidsPageState();
 }
 
-class _MenPageState extends State<MenPage> {
-  Color iconColor = MyColor.primaryIconColor;
+class _KidsPageState extends State<KidsPage> {
+  Color iconColor = MyColor.backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -26,23 +26,25 @@ class _MenPageState extends State<MenPage> {
       if (constraints.maxWidth <= Utils.mobileWidth) {
         return Scaffold(
           appBar: AppBar(
+            clipBehavior: Clip.none,
+            elevation: 0,
             backgroundColor: MyColor.backgroundColor,
             title: Utils.textHeader(
-                "Men", 10, FontWeight.bold, MyColor.primaryTextColor),
+                "Kids", 10, FontWeight.bold, MyColor.primaryTextColor),
           ),
           backgroundColor: MyColor.backgroundColor,
           body: SingleChildScrollView(
             child: Column(
               children: [
-                const BannerView(category: 'men'),
+                const BannerView(category: 'kids'),
                 BlocProvider(
-                  create: (_) => MenBloc()..add(LoadProductMen()),
-                  child: BlocBuilder<MenBloc, MenState>(
+                  create: (_) => KidsBloc()..add(LoadProductKids()),
+                  child: BlocBuilder<KidsBloc, KidsState>(
                     builder: (context, state) {
-                      if (state is MenLoading) {
+                      if (state is KidsLoading) {
                         return Center(child: Utils.loadingIcon());
-                      } else if (state is MenSuccess) {
-                        final products = state.menProducts;
+                      } else if (state is KidsSuccess) {
+                        final products = state.KidsProducts;
 
                         return products.isNotEmpty
                             ? Padding(
@@ -234,14 +236,20 @@ class _MenPageState extends State<MenPage> {
                                   ),
                                 ),
                               )
-                            : Center(
-                                child: Utils.textHeader(
-                                    'No products available.',
-                                    10,
-                                    FontWeight.bold,
-                                    MyColor.primaryTextColor),
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Center(
+                                    child: Utils.textHeader(
+                                        'No products available.',
+                                        10,
+                                        FontWeight.bold,
+                                        MyColor.primaryTextColor),
+                                  ),
+                                ],
                               );
-                      } else if (state is MenFailure) {
+                      } else if (state is KidsFailure) {
                         return Center(
                           child: Center(
                             child: Utils.textHeader(state.error, 10,
@@ -249,9 +257,13 @@ class _MenPageState extends State<MenPage> {
                           ),
                         );
                       } else {
-                        return Center(
-                          child: Utils.textHeader('No products available.', 10,
-                              FontWeight.bold, MyColor.primaryTextColor),
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Utils.textHeader('No products available.', 10,
+                                FontWeight.bold, MyColor.primaryTextColor),
+                          ],
                         );
                       }
                     },
@@ -266,7 +278,7 @@ class _MenPageState extends State<MenPage> {
         appBar: AppBar(
           backgroundColor: MyColor.backgroundColor,
           title: Utils.textHeader(
-            "Men",
+            "kids",
             10,
             FontWeight.bold,
             MyColor.primaryTextColor,
@@ -276,15 +288,15 @@ class _MenPageState extends State<MenPage> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              const BannerView(category: 'men'),
+              const BannerView(category: 'kids'),
               BlocProvider(
-                create: (_) => MenBloc()..add(LoadProductMen()),
-                child: BlocBuilder<MenBloc, MenState>(
+                create: (_) => KidsBloc()..add(LoadProductKids()),
+                child: BlocBuilder<KidsBloc, KidsState>(
                   builder: (context, state) {
-                    if (state is MenLoading) {
+                    if (state is KidsLoading) {
                       return Center(child: Utils.loadingIcon());
-                    } else if (state is MenSuccess) {
-                      final products = state.menProducts;
+                    } else if (state is KidsSuccess) {
+                      final products = state.KidsProducts;
 
                       return products.isNotEmpty
                           ? Padding(
@@ -467,27 +479,37 @@ class _MenPageState extends State<MenPage> {
                                 ),
                               ),
                             )
-                          : Container(
-                              color: MyColor.backgroundColor,
-                              height: screenHeight,
-                              width: screenWidth,
-                              child: Center(
-                                child: Utils.textHeader(
-                                    'No products available.',
-                                    10,
-                                    FontWeight.bold,
-                                    MyColor.primaryTextColor),
-                              ),
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  color: MyColor.backgroundColor,
+                                  height: screenHeight,
+                                  width: screenWidth,
+                                  child: Center(
+                                    child: Utils.textHeader(
+                                        'No products available.',
+                                        10,
+                                        FontWeight.bold,
+                                        MyColor.primaryTextColor),
+                                  ),
+                                )
+                              ],
                             );
-                    } else if (state is MenFailure) {
+                    } else if (state is KidsFailure) {
                       return Center(
                         child: Utils.textHeader(state.error, 10,
                             FontWeight.bold, MyColor.primaryTextColor),
                       );
                     } else {
-                      return Center(
-                        child: Utils.textHeader('No products available.', 10,
-                            FontWeight.bold, MyColor.primaryTextColor),
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Utils.textHeader('No products available.', 10,
+                              FontWeight.bold, MyColor.primaryTextColor),
+                        ],
                       );
                     }
                   },

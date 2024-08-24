@@ -34,7 +34,7 @@ class _ViewBannerState extends State<ViewBanner> {
                 itemBuilder: (context, index) {
                   final product = products[index];
                   Utils.logger
-                      .i("${product.category}\n${product.image.toString()}");
+                      .i("${product.category}\n${product.image[index]}");
 
                   return Container(
                     margin: const EdgeInsets.symmetric(vertical: 5),
@@ -58,7 +58,7 @@ class _ViewBannerState extends State<ViewBanner> {
                               height: 50,
                               width: 50,
                               child: Image.network(
-                                product.image.toString(),
+                                product.image[index],
                                 fit: BoxFit.cover,
                               ),
                             )

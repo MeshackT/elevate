@@ -12,6 +12,9 @@ class ViewProducts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyColor.backgroundColor,
@@ -47,105 +50,111 @@ class ViewProducts extends StatelessWidget {
               } else if (state is ViewProductsLoaded) {
                 final products = state.products;
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    // VIew buttons
-                    Utils.getSizedBoxHeight(),
-                    Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.start,
-                      children: [
-                        Container(
-                            color: MyColor.backgroundBlackColor,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            child: TextButton(
-                                onPressed: () {
-                                  context
-                                      .read<ViewbannerBloc>()
-                                      .add(NavigateToBanner());
-                                },
-                                child: Utils.textHeader(
-                                    "Banners",
-                                    14,
-                                    FontWeight.w400,
-                                    MyColor.primaryWhiteTextColor))),
-                        Utils.getSizedBoxWidthFive(),
-                        Container(
-                            color: MyColor.backgroundBlackColor,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            child: TextButton(
-                                onPressed: () {
-                                  context
-                                      .read<NewcollectionBloc>()
-                                      .add(NavigateToNewCollection());
-                                },
-                                child: Utils.textHeader(
-                                    "New collection",
-                                    14,
-                                    FontWeight.w400,
-                                    MyColor.primaryWhiteTextColor))),
-                        Utils.getSizedBoxWidthFive(),
-                      ],
-                    ),
-                    Utils.getSizedBoxHeight(),
-                    Expanded(
-                      flex: 1,
-                      child: ListView.builder(
-                        itemCount: products.length,
-                        itemBuilder: (context, index) {
-                          final product = products[index];
-                          Utils.logger
-                              .i("${product.name}\n${product.image.first}");
-
-                          return Container(
-                            margin: const EdgeInsets.symmetric(vertical: 5),
-                            decoration: BoxDecoration(
-                              color:
-                                  MyColor.backgroundBlackColor.withOpacity(.1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: ListTile(
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(product.name),
-                                  Utils.getSizedBoxHeightFive(),
-                                  Utils.textHeader(
-                                      "${product.category}",
-                                      13,
+                return Container(
+                  height: screenHeight,
+                  width: screenWidth,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      // VIew buttons
+                      Utils.getSizedBoxHeight(),
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.start,
+                        children: [
+                          Container(
+                              color: MyColor.backgroundBlackColor,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              child: TextButton(
+                                  onPressed: () {
+                                    context
+                                        .read<ViewbannerBloc>()
+                                        .add(NavigateToBanner());
+                                  },
+                                  child: Utils.textHeader(
+                                      "Banners",
+                                      14,
                                       FontWeight.w400,
-                                      MyColor.primaryTextColor),
-                                ],
-                              ),
-                              subtitle: Text(product.description),
-                              leading: product.image.isNotEmpty
-                                  ? SizedBox(
-                                      height: 50,
-                                      width: 50,
-                                      child: Image.network(
-                                        product.image.first,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    )
-                                  : null,
-                              trailing: IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () {
-                                  context
-                                      .read<ViewProductsBloc>()
-                                      .add(DeleteProduct(product.id));
-                                },
-                              ),
-                            ),
-                          );
-                        },
+                                      MyColor.primaryWhiteTextColor))),
+                          Utils.getSizedBoxWidthFive(),
+                          Container(
+                              color: MyColor.backgroundBlackColor,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              child: TextButton(
+                                  onPressed: () {
+                                    context
+                                        .read<NewcollectionBloc>()
+                                        .add(NavigateToNewCollection());
+                                  },
+                                  child: Utils.textHeader(
+                                      "New collection",
+                                      14,
+                                      FontWeight.w400,
+                                      MyColor.primaryWhiteTextColor))),
+                          Utils.getSizedBoxWidthFive(),
+                        ],
                       ),
-                    ),
-                  ],
+                      Utils.getSizedBoxHeight(),
+                      Expanded(
+                        flex: 1,
+                        child: ListView.builder(
+                          itemCount: products.length,
+                          itemBuilder: (context, index) {
+                            final product = products[index];
+                            Utils.logger
+                                .i("${product.name}\n${product.image[index]}");
+
+                            return Container(
+                              margin: const EdgeInsets.symmetric(vertical: 5),
+                              decoration: BoxDecoration(
+                                color: MyColor.backgroundBlackColor
+                                    .withOpacity(.1),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: ListTile(
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(product.name),
+                                    Utils.getSizedBoxHeightFive(),
+                                    Utils.textHeader(
+                                        "${product.category}",
+                                        13,
+                                        FontWeight.w400,
+                                        MyColor.primaryTextColor),
+                                  ],
+                                ),
+                                subtitle: Text(product.description),
+                                leading: product.image.isNotEmpty
+                                    ? SizedBox(
+                                        height: 50,
+                                        width: 50,
+                                        child: Image.network(
+                                          product.image[index],
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )
+                                    : null,
+                                trailing: IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () {
+                                    context
+                                        .read<ViewProductsBloc>()
+                                        .add(DeleteProduct(product.id));
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               } else if (state is ViewProductsError) {
                 return Center(child: Text(state.message));

@@ -66,6 +66,67 @@ class Utils {
     ));
   }
 
+  // likes
+  static like(Function() function) {
+    return GestureDetector(
+      onTap: function,
+      child: Container(
+        width: 20,
+        height: 20,
+        decoration: BoxDecoration(
+          color: MyColor.backgroundColor,
+          borderRadius: BorderRadius.circular(50),
+          border: Border.all(
+            color: MyColor.primaryIconRedColor, // Set your desired border color
+            width: 1.0, // Set the border width
+          ),
+        ),
+        child: const Center(
+          child: Icon(
+            // color: Colors.transparent,
+            // onPressed: function,
+            Icons.local_fire_department,
+            size: 15,
+            color: MyColor.primaryIconRedColor,
+          ),
+        ),
+      ),
+    );
+  }
+
+  // add to cart icon mobile
+  static Widget addToCart({
+    required Function() function,
+    required Color iconColor,
+    required Function(PointerEvent event) onHoverFunction,
+    required Function(PointerEvent event) onExitFunction,
+  }) {
+    return MouseRegion(
+      onHover: onHoverFunction,
+      onExit: onExitFunction,
+      child: GestureDetector(
+        onTap: function,
+        child: Container(
+          width: 40,
+          height: 20,
+          decoration: BoxDecoration(
+            color: MyColor.backgroundColor,
+            borderRadius: BorderRadius.circular(50),
+            border: Border.all(
+              color: iconColor,
+              width: 1.0,
+            ),
+          ),
+          child: Icon(
+            Icons.shopping_cart_outlined,
+            size: 10,
+            color: iconColor, // Use the dynamic iconColor here
+          ),
+        ),
+      ),
+    );
+  }
+
   static errorIcon() {
     return Center(
         child: AlertDialog(

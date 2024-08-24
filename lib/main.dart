@@ -6,6 +6,7 @@ import 'package:elevate/pages/upload_images/upload.dart';
 import 'package:elevate/pages/view_banner/view_banner.dart';
 import 'package:elevate/pages/view_collection/new_collection.dart';
 import 'package:elevate/pages/view_products/view_products.dart';
+import 'package:elevate/pages/women_page/women_page.dart';
 import 'package:elevate/theme_utils/theme_utils.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         // home: const Start(),
-        initialRoute: "/",
+        initialRoute: "/profile",
         routes: {
           '/': (context) => const Start(),
           '/login': (context) => const LogIn(),
@@ -52,6 +53,8 @@ class MyApp extends StatelessWidget {
           '/view_new_collections': (context) => const NewCollection(),
           '/view_banners': (context) => const ViewBanner(),
           '/men': (context) => const MenPage(),
+          '/women': (context) => const WomenPage(),
+          '/kids': (context) => const WomenPage(),
         },
       ),
     );

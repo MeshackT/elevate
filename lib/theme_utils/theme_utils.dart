@@ -14,6 +14,8 @@ class MyColor {
   static const primaryIconColor = Color(0xff000000);
   static const secondaryIconColor = Color(0xff2f2f2f);
   static const tertiaryIconColor = Color(0xffffffff);
+  static const primaryIconRedColor = Color(0xffff0000);
+
   // button red
   static const primaryRedColor = Color(0xffff0000);
   static const primaryRedAccentColor = Color(0xffd53e3e);

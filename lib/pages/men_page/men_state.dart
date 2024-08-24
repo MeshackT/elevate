@@ -28,3 +28,5 @@ class MenFailure extends MenState {
   @override
   List<Object> get props => [error];
 }
+
+class NavigateToMenState extends MenState {}

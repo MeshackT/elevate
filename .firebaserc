@@ -1,6 +1,7 @@
 {
   "projects": {
-    "elevate": "elevate-a3dca"
+    "elevate": "elevate-a3dca",
+    "default": "elevate-a3dca"
   },
   "targets": {},
   "etags": {},

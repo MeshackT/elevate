@@ -1,8 +1,11 @@
+import 'package:elevate/pages/women_page/women_page.dart';
 import 'package:elevate/theme_utils/theme_utils.dart';
 import 'package:elevate/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../kids_page/kids_page.dart';
+import '../men_page/men_page.dart';
 import 'navbar_bloc.dart';
 
 class Navbar extends StatelessWidget {
@@ -16,21 +19,33 @@ class Navbar extends StatelessWidget {
         listeners: [
           BlocListener<NavbarBloc, NavbarState>(
             listener: (context, state) {
-              // if (state is NavigateToMenState) {
-              //   Utils.logger.i("Navigating to Men page"); // Debug statement
-              //   Navigator.of(context).pushNamed("/men");
-              // } else
+              if (state is NavigateToMenState) {
+                Utils.logger.i("Navigating to Men page"); // Debug statement
+                // Navigator.of(context).pushNamed("/men");
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const MenPage()));
+              }
               if (state is NavigateToWomenState) {
-                // Navigator.of(context).pushNamed("/women");
-              } else if (state is NavigateToKidsState) {
+                Utils.logger.i("we clicking the button 1");
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const WomenPage()));
+              }
+              if (state is NavigateToKidsState) {
                 // Navigator.of(context).pushNamed("/kids");
-              } else if (state is NavigateToLoginState) {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const KidsPage()));
+              }
+              if (state is NavigateToLoginState) {
+                Utils.logger.i("we are checking the state 3");
                 Navigator.of(context).pushNamed("/signUp");
-              } else if (state is NavigateToCartState) {
+              }
+              if (state is NavigateToCartState) {
                 // Navigator.of(context).pushNamed("/cart");
-              } else if (state is NavigateToMyProfileState) {
+              }
+              if (state is NavigateToMyProfileState) {
                 Navigator.of(context).pushNamed("/profile");
-              } else if (state is NavigateToTestState) {
+              }
+              if (state is NavigateToTestState) {
                 Utils.logger.i("State is NavigateToTestState");
                 Navigator.of(context).pushNamed("/view_products");
               }
@@ -65,31 +80,39 @@ class Navbar extends StatelessWidget {
                 ],
               ),
               Utils.getSizedBoxWidth(),
+              // navigation buttons
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Utils.buttonNave(
                       "Men", 13, FontWeight.w400, MyColor.primaryTextColor, () {
-                    Utils.logger.i("button pressed");
-                    context.read<NavbarBloc>().add(NavigateToTest());
-
+                    Utils.logger.i("navigation 2 button pressed");
                     // context.read<NavbarBloc>().add(NavigateToMen());
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const MenPage()));
                   }),
                   Utils.getSizedBoxWidth(),
                   Utils.buttonNave(
                       "Women", 13, FontWeight.w400, MyColor.primaryTextColor,
                       () {
+                    Utils.logger.i("we clicking the button 1");
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const WomenPage()));
                     // Navigate to Women
+                    // context.read<NavbarBloc>().add(NavigateToWomen());
                   }),
                   Utils.getSizedBoxWidth(),
                   Utils.buttonNave(
                       "Kid's", 13, FontWeight.w400, MyColor.primaryTextColor,
                       () {
                     // Navigate to Kids
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const KidsPage()));
                   }),
                 ],
               ),
               Utils.getSizedBoxWidth(),
+              // login and counter
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -117,6 +140,8 @@ class Navbar extends StatelessWidget {
                       else {
                         return Utils.buttonNave("Log In", 13, FontWeight.w400,
                             MyColor.primaryTextColor, () {
+                          Utils.logger.i("we clicked the button 1");
+
                           context.read<NavbarBloc>().add(NavigateToLogin());
                         });
                       }

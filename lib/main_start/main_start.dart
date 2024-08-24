@@ -2,14 +2,17 @@ import 'package:elevate/theme_utils/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../pages/banner_view.dart';
+import '../pages/banner_view/banner_view.dart';
 import '../pages/contact_details.dart';
 import '../pages/footer_page.dart';
+import '../pages/kids_page/kids_page.dart';
 import '../pages/landing_page.dart';
+import '../pages/men_page/men_page.dart';
 import '../pages/nav_bar/navbar.dart';
 import '../pages/nav_bar/navbar_bloc.dart';
 import '../pages/new_collection.dart';
 import '../pages/news_letter_page.dart';
+import '../pages/women_page/women_page.dart';
 import '../utils/utils.dart';
 
 class Start extends StatelessWidget {
@@ -35,13 +38,18 @@ class Start extends StatelessWidget {
                   // Landing page
                   const LandingPage(),
                   // banner
-                  const BannerView(),
+                  Utils.getSizedBoxHeight(),
+                  const BannerView(
+                    category: 'women',
+                  ),
                   // New collections
                   const NewCollections(),
                   // Exclusive product
                   const NewsLetter(),
                   // Subscribe
-                  const BannerView(),
+                  const BannerView(
+                    category: 'men',
+                  ),
                   // Footer
                   Footer(),
                 ],
@@ -75,13 +83,17 @@ class Start extends StatelessWidget {
                   // Landing page
                   const LandingPage(),
                   // banner
-                  const BannerView(),
+                  const BannerView(
+                    category: "women",
+                  ),
                   // New collections
                   const NewCollections(),
                   // Exclusive product
                   const NewsLetter(),
                   // Subscribe
-                  const BannerView(),
+                  const BannerView(
+                    category: 'men',
+                  ),
                   // Footer
                   Footer(),
                 ],
@@ -112,9 +124,14 @@ class MyDrawer extends StatelessWidget {
             if (state is NavigateToMenState) {
               Navigator.of(context).pushNamed("/men");
             } else if (state is NavigateToWomenState) {
-              // Navigator.of(context).pushNamed("/women");
+              Navigator.of(context).pushNamed("/women");
+              Utils.logger.i("we clicking the button 3");
+              // Navigator.of(context).push(MaterialPageRoute(
+              //     builder: (context) => const WomenPage()));
             } else if (state is NavigateToKidsState) {
               // Navigator.of(context).pushNamed("/kids");
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const WomenPage()));
             } else if (state is NavigateToLoginState) {
               Navigator.of(context).pushNamed("/signUp");
             } else if (state is NavigateToCartState) {
@@ -167,7 +184,9 @@ class MyDrawer extends StatelessWidget {
                               MyColor.primaryTextColor),
                           onTap: () {
                             Utils.logger.i("Men click");
-                            context.read<NavbarBloc>().add(NavigateToMen());
+                            // context.read<NavbarBloc>().add(NavigateToMen());
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const MenPage()));
                           },
                         ),
                       ),
@@ -179,7 +198,10 @@ class MyDrawer extends StatelessWidget {
                           title: Utils.textHeader("Women", 13, FontWeight.w400,
                               MyColor.primaryTextColor),
                           onTap: () {
-                            // TODO: Navigate to Women
+                            // Navigate to Women
+                            Utils.logger.i("we clicking the button 1");
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const WomenPage()));
                           },
                         ),
                       ),
@@ -191,7 +213,9 @@ class MyDrawer extends StatelessWidget {
                           title: Utils.textHeader("Kid's", 13, FontWeight.w400,
                               MyColor.primaryTextColor),
                           onTap: () {
-                            // TODO: Navigate to Kids Clothes
+                            //Navigate to Kids Clothes
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const KidsPage()));
                           },
                         ),
                       ),

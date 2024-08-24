@@ -6,12 +6,15 @@ import 'package:elevate/pages/men_page/men_bloc.dart';
 import 'package:elevate/pages/upload_banner/uploadbanner_bloc.dart';
 import 'package:elevate/pages/upload_images/upload_bloc.dart';
 import 'package:elevate/pages/upload_new_collection/uploadnewcollection_bloc.dart';
+import 'package:elevate/pages/view_banner/viewbanner_bloc.dart';
 import 'package:elevate/pages/view_products/view_products_bloc.dart';
+import 'package:elevate/pages/women_page/women_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../pages/banner_view/banner_view_bloc.dart';
+import '../pages/kids_page/kids_bloc.dart';
 import '../pages/nav_bar/navbar_bloc.dart';
-import '../pages/view_banner/viewbanner_bloc.dart';
 import '../pages/view_collection/newcollection_bloc.dart';
 
 class AppBlocProviders {
@@ -21,6 +24,8 @@ class AppBlocProviders {
         BlocProvider(create: (context) => NavbarBloc()),
         // men, women, kids filters
         BlocProvider(create: (context) => MenBloc()),
+        BlocProvider(create: (context) => WomenBloc()),
+        BlocProvider(create: (context) => KidsBloc()),
         // authentication
         BlocProvider(
           create: (context) =>
@@ -48,6 +53,11 @@ class AppBlocProviders {
         BlocProvider(
           create: (context) => NewcollectionBloc(),
         ),
+        // get banner
+        BlocProvider(
+          create: (context) => BannerViewBloc(),
+        ),
+        // view banner on upload
         BlocProvider(
           create: (context) => ViewbannerBloc(),
         ),

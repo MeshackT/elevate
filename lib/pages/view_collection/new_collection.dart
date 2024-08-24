@@ -25,51 +25,53 @@ class NewCollection extends StatelessWidget {
             } else if (state is ViewNewCollectionsLoaded) {
               final products = state.collection;
 
-              return ListView.builder(
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  final product = products[index];
-                  Utils.logger.i("${product.name}\n${product.image.first}");
-
-                  return Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    decoration: BoxDecoration(
-                      color: MyColor.backgroundBlackColor.withOpacity(.1),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: ListTile(
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(product.name),
-                          Utils.getSizedBoxHeightFive(),
-                          Utils.textHeader("${product.category}", 13,
-                              FontWeight.w400, MyColor.primaryTextColor),
-                        ],
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Wrap(
+                  spacing: 8.0, // Space between items horizontally
+                  runSpacing: 8.0, // Space between lines vertically
+                  children: products.map((product) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width *
+                          0.45, // Adjust the width as needed
+                      decoration: BoxDecoration(
+                        color: MyColor.backgroundBlackColor.withOpacity(.1),
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      subtitle: Text(product.description),
-                      leading: product.image.isNotEmpty
-                          ? SizedBox(
-                              height: 50,
-                              width: 50,
-                              child: Image.network(
-                                product.image.first,
-                                fit: BoxFit.cover,
-                              ),
-                            )
-                          : null,
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () {
-                          context
-                              .read<NewcollectionBloc>()
-                              .add(DeleteNewcollection(product.id));
-                        },
+                      child: ListTile(
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(product.name),
+                            Utils.getSizedBoxHeightFive(),
+                            Utils.textHeader("${product.category}", 13,
+                                FontWeight.w400, MyColor.primaryTextColor),
+                          ],
+                        ),
+                        subtitle: Text(product.description),
+                        leading: product.image.isNotEmpty
+                            ? SizedBox(
+                                height: 50,
+                                width: 50,
+                                child: Image.network(
+                                  product.image.first,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : null,
+                        trailing: IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () {
+                            context
+                                .read<NewcollectionBloc>()
+                                .add(DeleteNewcollection(product.id));
+                          },
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  }).toList(),
+                ),
               );
             } else if (state is ViewNewCollectionsError) {
               return Center(child: Text(state.message));

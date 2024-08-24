@@ -42,7 +42,8 @@ class ItemDetailsScreen extends StatelessWidget {
                                 3,
                                 (index) => Padding(
                                       padding: const EdgeInsets.all(4.0),
-                                      child: Image.network(product['image'],
+                                      child: Image.network(
+                                          product['image'][index],
                                           height: 150),
                                     )),
                           ],

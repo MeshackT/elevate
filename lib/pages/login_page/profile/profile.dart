@@ -24,6 +24,7 @@ class MyProfile extends StatelessWidget {
         height: screenHeight,
         width: screenWidth,
         color: MyColor.backgroundColor,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         child: SizedBox(
           height: screenHeight * .9,
           width: screenWidth * .9,
@@ -41,38 +42,105 @@ class MyProfile extends StatelessWidget {
                     return Center(child: Utils.loadingIcon());
                   } else if (state is ProfileLoaded) {
                     return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Utils.textHeader(state.userName, 14, FontWeight.w400,
+                        Utils.textHeader("My Profile", 16, FontWeight.w800,
                             MyColor.primaryTextColor),
-                        Utils.getSizedBoxHeight(),
-                        Utils.textHeader(state.email, 14, FontWeight.w400,
-                            MyColor.primaryTextColor),
-                        Utils.getSizedBoxHeight(),
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Utils.buttonRedSmaller(
-                                "Sign Out",
-                                14,
-                                FontWeight.w400,
-                                MyColor.primaryWhiteTextColor,
-                                () => null),
-                            Utils.buttonRedSmaller(
-                                "Delete my account",
-                                14,
-                                FontWeight.w400,
-                                MyColor.primaryWhiteTextColor,
-                                () => null),
+                            const CircleAvatar(
+                              backgroundColor: MyColor.backgroundColor,
+                              child: Icon(
+                                Icons.person,
+                                color: MyColor.primaryIconColor,
+                                size: 20,
+                              ),
+                            ),
+                            Utils.getSizedBoxWidthFive(),
+                            Utils.textHeader(state.userName, 14,
+                                FontWeight.w400, MyColor.primaryTextColor),
                           ],
                         ),
-                        Utils.buttonRed("Uploads", 14, FontWeight.w600,
-                            MyColor.primaryWhiteTextColor, () {
-                          // navigate to uploads
-                          context.read<ProfileBloc>().add(NavigateToUpload());
-                        })
+                        Utils.getSizedBoxHeightFive(),
+                        Row(
+                          children: [
+                            const CircleAvatar(
+                              backgroundColor: MyColor.backgroundColor,
+                              child: Icon(
+                                Icons.email,
+                                color: MyColor.primaryIconColor,
+                                size: 20,
+                              ),
+                            ),
+                            Utils.getSizedBoxWidthFive(),
+                            Utils.textHeader(state.email, 14, FontWeight.w400,
+                                MyColor.primaryTextColor),
+                          ],
+                        ),
+                        Utils.getSizedBoxHeightFive(),
+                        // my orders
+                        GestureDetector(
+                          onTap: () {
+                            Utils.logger.i("Pressed my history");
+                            // Navigator.of(context).push(
+                            //     MaterialPageRoute(builder: (context) => const MenPage()));
+                          },
+                          child: Container(
+                            color: MyColor.backgroundBlackColor.withOpacity(.5),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Utils.textHeader("View my History", 10,
+                                FontWeight.bold, MyColor.primaryWhiteTextColor),
+                          ),
+                        ),
+                        Utils.getSizedBoxHeightFive(),
+
+                        GestureDetector(
+                          onTap: () {
+                            Utils.logger.i("Navigate to Uploads");
+                            context.read<ProfileBloc>().add(NavigateToUpload());
+                          },
+                          child: Container(
+                            color: MyColor.backgroundBlackColor.withOpacity(.5),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Utils.textHeader("Upload products", 10,
+                                FontWeight.bold, MyColor.primaryWhiteTextColor),
+                          ),
+                        ),
+
+                        /////////////
+                        Utils.getSizedBoxHeightFive(),
+
+                        GestureDetector(
+                          onTap: () {
+                            Utils.logger.i("delete account");
+                            context.read<ProfileBloc>().add(NavigateToUpload());
+                          },
+                          child: Container(
+                            color: MyColor.primaryRedColor,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Utils.textHeader("Delete my account", 10,
+                                FontWeight.bold, MyColor.primaryWhiteTextColor),
+                          ),
+                        ),
+                        Utils.getSizedBoxHeight(),
+
+                        GestureDetector(
+                          onTap: () {
+                            Utils.logger.i("Sign out");
+                            context.read<ProfileBloc>().add(NavigateToUpload());
+                          },
+                          child: Container(
+                            color: MyColor.backgroundBlackColor.withOpacity(.5),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Utils.textHeader("Sign out", 10,
+                                FontWeight.bold, MyColor.primaryWhiteTextColor),
+                          ),
+                        ),
                       ],
                     );
                   } else if (state is ProfileError) {

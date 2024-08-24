@@ -22,6 +22,8 @@ class _SignUpState extends State<SignUp> {
     TextEditingController password = TextEditingController();
     TextEditingController confirmPassword = TextEditingController();
     bool load = false;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -78,19 +80,21 @@ class _SignUpState extends State<SignUp> {
           if (state is SignupLoading) {
             return Center(child: Utils.loadingIcon());
           }
-          return Center(
-            child: Container(
-              color: MyColor.backgroundColor,
-              padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Utils.textHeader(
-                      "Sign Up", 46, FontWeight.bold, MyColor.primaryTextColor),
-                  Utils.getSizedBoxHeight(),
-                  Expanded(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width / 2.3,
+          return Container(
+            height: screenHeight,
+            width: screenWidth,
+            color: MyColor.backgroundColor,
+            padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Utils.textHeader(
+                    "Sign Up", 46, FontWeight.bold, MyColor.primaryTextColor),
+                Utils.getSizedBoxHeight(),
+                Expanded(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width / 2.3,
+                    child: SingleChildScrollView(
                       child: Column(
                         children: [
                           TextField(
@@ -169,63 +173,63 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
                   ),
-                  load == true
-                      ? Utils.loadingIcon()
-                      : Utils.buttonRed("Continue", 13, FontWeight.w400,
-                          MyColor.primaryWhiteTextColor, () {
-                          // TODO Sign up
-                          if (password.text == confirmPassword.text &&
-                              email.text.isNotEmpty) {
-                            // pass the data on the constructor
-                            UserModel user = UserModel(
-                              userName: userName.text.trim(),
-                              email: email.text.trim(),
-                              password: password.text.trim(),
-                            );
-                            setState(() {
-                              load = true;
-                            });
+                ),
+                load == true
+                    ? Utils.loadingIcon()
+                    : Utils.buttonRed("Continue", 13, FontWeight.w400,
+                        MyColor.primaryWhiteTextColor, () {
+                        // TODO Sign up
+                        if (password.text == confirmPassword.text &&
+                            email.text.isNotEmpty) {
+                          // pass the data on the constructor
+                          UserModel user = UserModel(
+                            userName: userName.text.trim(),
+                            email: email.text.trim(),
+                            password: password.text.trim(),
+                          );
+                          setState(() {
+                            load = true;
+                          });
 
-                            // register the user and store the data
-                            context.read<SignupBloc>().add(SignUpUser(user));
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                backgroundColor: MyColor.backgroundBlackColor,
-                                content: Utils.textHeader(
-                                    "Passwords do not match",
-                                    13,
-                                    FontWeight.bold,
-                                    MyColor.primaryTextColor),
-                              ),
-                            );
-                          }
-                        }),
-                  Utils.getSizedBoxHeight(),
-                  Text.rich(
-                    TextSpan(
-                      text: 'Already have an account? ',
-                      children: [
-                        TextSpan(
-                          text: 'Login here',
-                          style: const TextStyle(
-                            color: MyColor.primaryTextColor,
-                            decoration: TextDecoration.underline,
-                          ),
-                          // Add your navigation logic here
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              //   log In
-                              // event method
-                              context.read<SignupBloc>().add(NavigateToLogIn());
-                            },
+                          // register the user and store the data
+                          context.read<SignupBloc>().add(SignUpUser(user));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: MyColor.backgroundBlackColor,
+                              content: Utils.textHeader(
+                                  "Passwords do not match",
+                                  13,
+                                  FontWeight.bold,
+                                  MyColor.primaryTextColor),
+                            ),
+                          );
+                        }
+                      }),
+                Utils.getSizedBoxHeight(),
+                Text.rich(
+                  TextSpan(
+                    text: 'Already have an account? ',
+                    children: [
+                      TextSpan(
+                        text: 'Login here',
+                        style: const TextStyle(
+                          color: MyColor.primaryTextColor,
+                          decoration: TextDecoration.underline,
                         ),
-                      ],
-                    ),
+                        // Add your navigation logic here
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            //   log In
+                            // event method
+                            context.read<SignupBloc>().add(NavigateToLogIn());
+                          },
+                      ),
+                    ],
                   ),
-                  Utils.getSizedBoxHeight(),
-                ],
-              ),
+                ),
+                Utils.getSizedBoxHeight(),
+              ],
             ),
           );
         }),

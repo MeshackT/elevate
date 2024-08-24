@@ -12,10 +12,10 @@ class LandingPage extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     final List<String> images = [
-      'assets/images/carousel/model.png',
-      'assets/images/carousel/model.png',
+      'assets/images/carousel/model.webp',
+      'assets/images/carousel/m4.webp',
+      'assets/images/carousel/m2.webp',
     ];
-
     return LayoutBuilder(builder: (context, constraint) {
       if (constraint.maxWidth > Utils.mobileWidth) {
         return Container(

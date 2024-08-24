@@ -26,20 +26,21 @@ class NavbarBloc extends Bloc<NavbarEvent, NavbarState> {
         emit(NavbarError(e.toString()));
       }
     });
-
+    // navigate to men page
     on<NavigateToMen>((event, emit) {
-      Utils.logger.i("Men pressed");
+      Utils.logger.i("Men pressed emit to call the state");
       emit(NavigateToMenState());
     });
-    on<NavigateToWomen>((event, emit) => emit(NavigateToWomenState()));
+    on<NavigateToWomen>((event, emit) {
+      Utils.logger.i("WOmen clicked emit to call the state 2");
+      emit(NavigateToWomenState());
+    });
     on<NavigateToKids>((event, emit) => emit(NavigateToKidsState()));
     on<NavigateToLogin>((event, emit) {
-      Utils.logger.i("emit function");
-
+      Utils.logger.i("emit function 2");
       emit(NavigateToLoginState());
     });
     // Test
-    on<NavigateToTest>((event, emit) => emit(NavigateToTestState()));
     on<NavigateToCart>((event, emit) => emit(NavigateToCartState()));
     on<NavigateToMyProfile>((event, emit) => emit(NavigateToMyProfileState()));
   }

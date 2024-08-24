@@ -13,6 +13,8 @@ class LogIn extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController email = TextEditingController();
     TextEditingController password = TextEditingController();
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -46,20 +48,22 @@ class LogIn extends StatelessWidget {
           if (state is LoginLoading) {
             return Center(child: Utils.loadingIcon());
           }
-          return Center(
-            child: Container(
-              color: MyColor.backgroundColor,
-              padding: const EdgeInsets.only(
-                  left: 60, right: 60, top: 20, bottom: 4),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Utils.textHeader(
-                      "Log In", 46, FontWeight.bold, MyColor.primaryTextColor),
-                  Utils.getSizedBoxHeight(),
-                  Expanded(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width / 2.3,
+          return Container(
+            color: MyColor.backgroundColor,
+            height: screenHeight,
+            width: screenWidth,
+            padding:
+                const EdgeInsets.only(left: 60, right: 60, top: 20, bottom: 4),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Utils.textHeader(
+                    "Log In", 46, FontWeight.bold, MyColor.primaryTextColor),
+                Utils.getSizedBoxHeight(),
+                Expanded(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width / 2.3,
+                    child: SingleChildScrollView(
                       child: Column(
                         children: [
                           TextField(
@@ -101,37 +105,37 @@ class LogIn extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Utils.buttonRed("Log In", 13, FontWeight.w400,
-                      MyColor.primaryWhiteTextColor, () {
-                    // send the login credentials to sign in
-                    context
-                        .read<LoginBloc>()
-                        .add(LogInUser(email.text, password.text));
-                  }),
-                  Utils.getSizedBoxHeight(),
-                  Text.rich(
-                    TextSpan(
-                      text: "Don't have an account? ",
-                      children: [
-                        TextSpan(
-                          text: 'Sign up here',
-                          style: TextStyle(
-                            color: MyColor.primaryTextColor,
-                            decoration: TextDecoration.underline,
-                          ),
-                          // Add your navigation logic here
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              // go to sign up page Event method
-                              context.read<LoginBloc>().add(NavigateToSignUp());
-                            },
+                ),
+                Utils.buttonRed("Log In", 13, FontWeight.w400,
+                    MyColor.primaryWhiteTextColor, () {
+                  // send the login credentials to sign in
+                  context
+                      .read<LoginBloc>()
+                      .add(LogInUser(email.text, password.text));
+                }),
+                Utils.getSizedBoxHeight(),
+                Text.rich(
+                  TextSpan(
+                    text: "Don't have an account? ",
+                    children: [
+                      TextSpan(
+                        text: 'Sign up here',
+                        style: TextStyle(
+                          color: MyColor.primaryTextColor,
+                          decoration: TextDecoration.underline,
                         ),
-                      ],
-                    ),
+                        // Add your navigation logic here
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            // go to sign up page Event method
+                            context.read<LoginBloc>().add(NavigateToSignUp());
+                          },
+                      ),
+                    ],
                   ),
-                  Utils.getSizedBoxHeight(),
-                ],
-              ),
+                ),
+                Utils.getSizedBoxHeight(),
+              ],
             ),
           );
         }),
